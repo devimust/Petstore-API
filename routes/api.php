@@ -13,6 +13,16 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+// default index request response
+Route::get('/', function () {
+    return 'Petstore RESTful API';
+});
+
+// setup api version 1 routes
+Route::prefix('v1')->group(function () {
+    // Create new pet object
+    Route::post('pet', 'API\PetController@post');
+
+    // Retrieve pet object by id
+    Route::get('pet/{id}', 'API\PetController@get');
 });
