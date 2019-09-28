@@ -1,0 +1,101 @@
+{
+	"info": {
+		"_postman_id": "7e9aaa5a-8060-44e8-8abf-0e3ab48145f7",
+		"name": "Petstore API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "pet",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"id\": 1,\n  \"category\": {\n    \"id\": 1,\n    \"name\": \"Category1\"\n  },\n  \"name\": \"Rufus\",\n  \"photoUrls\": [\n    \"photoUrl1\",\n    \"photoUrl2\"\n  ],\n  \"tags\": [\n    {\n      \"id\": 1,\n      \"name\": \"tag1\"\n    },\n    {\n      \"id\": 2,\n      \"name\": \"tag2\"\n    },\n        {\n      \"id\": 3,\n      \"name\": \"tag3\"\n    }\n  ],\n  \"status\": \"pending\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8000/v1/pet",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"v1",
+						"pet"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "pet/{id}",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8000/v1/pet/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"v1",
+						"pet",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "pet",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"id\": 1,\n  \"category\": {\n    \"id\": 1,\n    \"name\": \"Category1\"\n  },\n  \"name\": \"Rufus\",\n  \"photoUrls\": [\n    \"photoUrl1\",\n    \"photoUrl2\"\n  ],\n  \"tags\": [\n    {\n      \"id\": 1,\n      \"name\": \"tag1\"\n    },\n    {\n      \"id\": 2,\n      \"name\": \"tag2\"\n    },\n        {\n      \"id\": 3,\n      \"name\": \"tag3\"\n    }\n  ],\n  \"status\": \"pending\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8000/v1/pet/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"v1",
+						"pet",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
