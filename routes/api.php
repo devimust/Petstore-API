@@ -21,8 +21,11 @@ Route::get('/', function () {
 // setup api version 1 routes
 Route::prefix('v1')->group(function () {
     // Create new pet object
-    Route::post('pet', 'API\PetController@post');
+    Route::post('pet', 'API\PetController@create');
 
     // Retrieve pet object by id
-    Route::get('pet/{id}', 'API\PetController@get');
+    Route::get('pet/{id}', 'API\PetController@read');
+
+    // Delete pet object by id
+    Route::delete('pet/{id}', 'API\PetController@delete');
 });

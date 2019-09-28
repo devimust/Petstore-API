@@ -8,13 +8,23 @@ use App\Http\Controllers\Controller as Controller;
 class BaseController extends Controller
 {
     /**
-     * success response method.
+     * success json response method.
      *
      * @return \Illuminate\Http\Response
      */
-    public function sendResponse($response, $code = 200)
+    public function sendJsonResponse($response, $code = 200)
     {
         return response()->json($response, $code);
+    }
+
+    /**
+     * success raw response method.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function sendResponse($message, $code = 200)
+    {
+        return response($message, $code);
     }
 
     /**
@@ -32,8 +42,8 @@ class BaseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function sendInvalidInput()
+    public function sendInvalidInput($message = 'Invalid input', $code = 405)
     {
-        return response('Invalid input', 405);
+        return response($message, $code);
     }
 }

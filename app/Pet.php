@@ -41,7 +41,8 @@ class Pet extends Model
     }
 
     /**
-     * Format the response data for a specified pet.
+     * Format the response data for a specified App\Pet resource.
+     *
      * @param mixed $pet
      * @return json
      */

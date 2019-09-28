@@ -13,16 +13,18 @@ use Validator;
 class PetController extends BaseController
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the specified resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function get(Request $request, $id)
+    public function read(Request $request, $id)
     {
-        if (!is_numeric($id) || $id <= 0) {
+        // perform input validation on $id
+        if (!is_numeric($id) || $id < 0) {
             return $this->sendInvalidInput();
         }
 
+        // check whether pet record exist
         $pet = Pet::find($id);
         if (!$pet) {
             return $this->sendError(
@@ -30,15 +32,18 @@ class PetController extends BaseController
             );
         }
 
-        return $this->sendResponse(
+        // return the pet record
+        return $this->sendJsonResponse(
             Pet::formatResponse($pet)
         );
     }
 
     /**
+     * Create a new record of the App\Pet model.
      *
+     * @return \Illuminate\Http\Response
      */
-    public function post(Request $request)
+    public function create(Request $request)
     {
         $id           = $request->input('id');
         $categoryObj  = $request->input('category');
@@ -47,6 +52,12 @@ class PetController extends BaseController
         $tags         = $request->input('tags');
         $status       = $request->input('status');
 
+        // perform input validation on $id
+        if (!is_numeric($id) || $id < 0) {
+            return $this->sendInvalidInput();
+        }
+
+        // check whether pet record exist
         $pet = Pet::find($id);
         if ($pet) {
             return $this->sendError(
@@ -54,6 +65,7 @@ class PetController extends BaseController
             );
         }
 
+        // try to create the record
         $pet = Pet::create([
             'id'        => $id,
             'name'      => $name,
@@ -64,6 +76,7 @@ class PetController extends BaseController
             return $this->sendInvalidInput();
         }
 
+        // ensure category is created and/or assigned correctly
         $category = Category::find($categoryObj['id']);
         if (!$category) {
             $category = Category::create([
@@ -74,6 +87,7 @@ class PetController extends BaseController
         $pet->category()->associate($category);
         $pet->save();
 
+        // ensure tags are created and/or assigned correctly
         $tagIds = [];
         foreach ($tags as $tagObject) {
             $tag = Tag::find($tagObject['id']);
@@ -85,11 +99,37 @@ class PetController extends BaseController
             }
             $tagIds[] = $tag->id;
         }
-
         $pet->tags()->sync($tagIds);
 
-        return $this->sendResponse(
+        // return the pet record
+        return $this->sendJsonResponse(
             Pet::formatResponse($pet)
         );
+    }
+
+    /**
+     * Delete a listing of the specified resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function delete(Request $request, $id)
+    {
+        // perform input validation on $id
+        if (!is_numeric($id) || $id < 0) {
+            return $this->sendInvalidInput('Invalid ID supplied', 400);
+        }
+
+        // check whether pet record exist
+        $pet = Pet::find($id);
+        if (!$pet) {
+            return $this->sendError(
+                'pet record not found'
+            );
+        }
+
+        // delete the pet record
+        $pet->delete();
+
+        return $this->sendResponse('');
     }
 }
