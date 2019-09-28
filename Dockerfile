@@ -1,5 +1,5 @@
 
-# Taken from
+# Taken and modified from here
 # @link https://github.com/Cyber-Duck/php-fpm-laravel/blob/7.1/Dockerfile
 FROM php:7.1-fpm
 
@@ -72,7 +72,7 @@ RUN docker-php-ext-install gd && \
 # Install the xdebug extension
 RUN pecl install xdebug && docker-php-ext-enable xdebug
 # Copy xdebug configration for remote debugging
-COPY ./xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
+COPY ./docker/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 
 #####################################
 # PHP Memcached:
@@ -81,18 +81,6 @@ COPY ./xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 # Install the php memcached extension
 RUN pecl install memcached && docker-php-ext-enable memcached
 
-#####################################
-# Composer:
-#####################################
-
-# Install composer and add its bin to the PATH.
-RUN curl -s http://getcomposer.org/installer | php && \
-    echo "export PATH=${PATH}:/var/www/vendor/bin" >> ~/.bashrc && \
-    mv composer.phar /usr/local/bin/composer
-# Source the bash
-RUN . ~/.bashrc
-
-
 #
 #--------------------------------------------------------------------------
 # Final setup
@@ -100,26 +88,14 @@ RUN . ~/.bashrc
 #
 ADD ./docker/php.ini /usr/local/etc/php/conf.d
 RUN rm -r /var/lib/apt/lists/*
-
 RUN usermod -u 1000 www-data
-
-#
-#--------------------------------------------------------------------------
-# Build steps
-#--------------------------------------------------------------------------
-#
-
 COPY . /var/www
-
-RUN composer install
-
 
 #
 #--------------------------------------------------------------------------
 # Environment
 #--------------------------------------------------------------------------
 #
-
 WORKDIR /var/www
-
 EXPOSE 9000
+CMD php artisan serve --host=0.0.0.0 --port=8000
